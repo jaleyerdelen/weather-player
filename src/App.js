@@ -1,4 +1,7 @@
 import { useEffect } from "react";
+import SpotifyPlayList from './components/Spotify/SpotifyPlayList'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 
 const REACT_APP_CLIENT_IDS = process.env.REACT_APP_CLIENT_ID
 const SPOTIFY_AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
@@ -37,10 +40,24 @@ function App() {
   };
 
   return (
+    <>
+    <BrowserRouter>
+    <Routes>
+      <Route path="/playlist" element={ <SpotifyPlayList /> }  /> 
+      
+      </Routes>
+      
+      
     <div className="container">
       <h2>hi</h2>
-      <button onClick={handleLogin}>Login to spotify</button>
+      <button className="btn btn-primary"onClick={handleLogin}>Login to spotify</button>
+      <div className="mt-5">
+        <SpotifyPlayList />
+      </div>
     </div>
+    </BrowserRouter>
+    </>
+   
   );
 }
 
