@@ -1,9 +1,10 @@
 import { useEffect } from "react";
-import SpotifyPlayList from './components/Spotify/SpotifyPlayList'
+import SpotifyPlayList from "./components/Spotify/SpotifyPlayList";
+import SpotifyHotPlayList from "./components/Spotify/SpotifyHotPlayList";
+import SpotifySnowPlayList from "./components/Spotify/SpotifySnowPlayList";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
-
-const REACT_APP_CLIENT_IDS = process.env.REACT_APP_CLIENT_ID
+const REACT_APP_CLIENT_IDS = process.env.REACT_APP_CLIENT_ID;
 const SPOTIFY_AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
 const REDIRECT_URL_AFTER_LOGIN = "http://localhost:3000/";
 const SPACE_DELIMITER = "%20";
@@ -41,23 +42,25 @@ function App() {
 
   return (
     <>
-    <BrowserRouter>
-    <Routes>
-      <Route path="/playlist" element={ <SpotifyPlayList /> }  /> 
-      
-      </Routes>
-      
-      
-    <div className="container">
-      <h2>hi</h2>
-      <button className="btn btn-primary"onClick={handleLogin}>Login to spotify</button>
-      <div className="mt-5">
-        <SpotifyPlayList />
-      </div>
-    </div>
-    </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/playlist" element={<SpotifyPlayList />} />
+          <Route path="/hotplaylist" element={<SpotifyHotPlayList />} />
+          <Route path="/snowplaylist" element={<SpotifySnowPlayList />} />
+        </Routes>
+        <div className="container">
+          <h2>hi</h2>
+          <button className="btn btn-primary" onClick={handleLogin}>
+            Login to spotify
+          </button>
+          <div className="mt-5">
+            <SpotifyPlayList />
+            <SpotifyHotPlayList />
+            <SpotifySnowPlayList />
+          </div>
+        </div>
+      </BrowserRouter>
     </>
-   
   );
 }
 
