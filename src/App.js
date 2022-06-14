@@ -11,6 +11,7 @@ const REDIRECT_URL_AFTER_LOGIN = "http://localhost:3000/";
 const SPACE_DELIMITER = "%20";
 const SCOPES = ["user-read-currently-playing", "user-read-playback-state"];
 const SCOPES_URL_PARAM = SCOPES.join(SPACE_DELIMITER);
+const REACT_APP_WEATHER_IDS = process.env.REACT_APP_WEATHER_ID;
 
 const SpotifyAuth = (hash) => {
   const stringAfterHashtag = hash.substring(1);
@@ -25,7 +26,8 @@ const SpotifyAuth = (hash) => {
 };
 
 function App() {
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState("istanbul");
+  const [weather, setWeather] = useState("")
 
   useEffect(() => {
     if (window.location.hash) {
@@ -41,7 +43,8 @@ function App() {
 
   useEffect(() => {
     geolocation();
-  }, []);
+    openWeather(location);
+  }, [location]);
 
   const handleLogin = () => {
     window.location = `${SPOTIFY_AUTHORIZE_ENDPOINT}?client_id=${REACT_APP_CLIENT_IDS}&redirect_uri=${REDIRECT_URL_AFTER_LOGIN}&scope=${SCOPES_URL_PARAM}&response_type=token&show_dialog=true`;
@@ -52,6 +55,17 @@ function App() {
       .get("https://geolocation-db.com/json/")
       .then((res) => {
         setLocation(res.data.city);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const openWeather = (location) => {
+    axios
+      .get(
+        `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${REACT_APP_WEATHER_IDS}&units=metric`
+      )
+      .then((res) => {
+        setWeather(res.data);
       })
       .catch((err) => console.log(err));
   };
