@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import SpotifyPlayList from "./components/Spotify/SpotifyPlayList";
 import SpotifyHotPlayList from "./components/Spotify/SpotifyHotPlayList";
 import SpotifySnowPlayList from "./components/Spotify/SpotifySnowPlayList";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import axios from "axios";
 
 const REACT_APP_CLIENT_IDS = process.env.REACT_APP_CLIENT_ID;
 const SPOTIFY_AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
@@ -24,6 +25,8 @@ const SpotifyAuth = (hash) => {
 };
 
 function App() {
+  const [location, setLocation] = useState("");
+
   useEffect(() => {
     if (window.location.hash) {
       const { access_token, expires_in, token_type } = SpotifyAuth(
@@ -36,8 +39,21 @@ function App() {
     }
   }, []);
 
+  useEffect(() => {
+    geolocation();
+  }, []);
+
   const handleLogin = () => {
     window.location = `${SPOTIFY_AUTHORIZE_ENDPOINT}?client_id=${REACT_APP_CLIENT_IDS}&redirect_uri=${REDIRECT_URL_AFTER_LOGIN}&scope=${SCOPES_URL_PARAM}&response_type=token&show_dialog=true`;
+  };
+
+  const geolocation = () => {
+    axios
+      .get("https://geolocation-db.com/json/")
+      .then((res) => {
+        setLocation(res.data.city);
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -53,7 +69,8 @@ function App() {
           <button className="btn btn-primary" onClick={handleLogin}>
             Login to spotify
           </button>
-          <div className="mt-5">
+          <div className="fw-bolder mt-5 mb-5">{`location is ${location}`}</div>
+          <div>
             <SpotifyPlayList />
             <SpotifyHotPlayList />
             <SpotifySnowPlayList />
