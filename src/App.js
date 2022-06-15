@@ -27,7 +27,7 @@ const SpotifyAuth = (hash) => {
 
 function App() {
   const [location, setLocation] = useState("istanbul");
-  const [weather, setWeather] = useState("")
+  const [weather, setWeather] = useState("");
 
   useEffect(() => {
     if (window.location.hash) {
@@ -54,7 +54,11 @@ function App() {
     axios
       .get("https://geolocation-db.com/json/")
       .then((res) => {
-        setLocation(res.data.city);
+        if (res.data.country_name) {
+          setLocation(res.data.country_name);
+        } else {
+          console.log("error");
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -65,7 +69,7 @@ function App() {
         `https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${REACT_APP_WEATHER_IDS}&units=metric`
       )
       .then((res) => {
-        setWeather(res.data);
+        setWeather(res.data.main.temp);
       })
       .catch((err) => console.log(err));
   };
@@ -74,7 +78,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/playlist" element={<SpotifyPlayList />} />
+          {/* <Route path="/playlist" element={<SpotifyPlayList weathers={weather} />} /> */}
           <Route path="/hotplaylist" element={<SpotifyHotPlayList />} />
           <Route path="/snowplaylist" element={<SpotifySnowPlayList />} />
         </Routes>
@@ -85,9 +89,18 @@ function App() {
           </button>
           <div className="fw-bolder mt-5 mb-5">{`location is ${location}`}</div>
           <div>
-            <SpotifyPlayList />
-            <SpotifyHotPlayList />
-            <SpotifySnowPlayList />
+            <div className="fw-bolder mt-5 mb-5">
+              Weather is {weather} <span>&#8451;</span>
+            </div>
+            {weather > 10 && weather < 34 ? (
+              <SpotifyPlayList />
+            ) : (
+              ""
+            )}
+
+            {weather > 35 && weather < 70 ? <SpotifyHotPlayList /> : ""}
+
+            {weather > -50 && weather < 0 ? <SpotifySnowPlayList /> : ""}
           </div>
         </div>
       </BrowserRouter>
