@@ -28,12 +28,17 @@ const SpotifyPlayList = () => {
 
   return (
     <div>
-      <button onClick={handleGetPlaylist} className="">
-        Spotify PlayList
-      </button>
-      <a rel="noreferrer" target="_blank" href={data}>
-        Playlist
-      </a>
+  
+<div className="btn-group">
+  <button onClick={handleGetPlaylist} type="button" className="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+    Success
+  </button>
+  <ul className="dropdown-menu">
+    <li><a rel="noreferrer" target="_blank" href={data} className="dropdown-item" >Your Playlist</a></li>
+  </ul>
+</div>
+     
+     
     </div>
   );
 };

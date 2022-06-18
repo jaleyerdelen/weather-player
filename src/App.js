@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import SpotifyPlayList from "./components/Spotify/SpotifyPlayList";
 import SpotifyHotPlayList from "./components/Spotify/SpotifyHotPlayList";
 import SpotifySnowPlayList from "./components/Spotify/SpotifySnowPlayList";
+import Navbar from "./components/Navbar"
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import axios from "axios";
 
@@ -80,8 +81,9 @@ function App() {
           {/* <Route path="/playlist" element={<SpotifyPlayList weathers={weather} />} /> */}
           <Route path="/hotplaylist" element={<SpotifyHotPlayList />} />
           <Route path="/snowplaylist" element={<SpotifySnowPlayList />} />
+          <Route path="/" element={<Navbar />} />
         </Routes>
-        <>
+        <div className="container">
           <div className="accordion accordion-flush" id="accordionFlushExample">
             <div className="accordion-item">
               <h2 className="accordion-header" id="flush-headingOne">
@@ -103,8 +105,8 @@ function App() {
                 data-bs-parent="#accordionFlushExample"
               >
                 <div className="accordion-body">
-                  <button classNameName="btn btn-primary" onClick={handleLogin}>
-                    Login to spotify
+                  <button className="btn btn-info" onClick={handleLogin}>
+                    Login
                   </button>
                 </div>
               </div>
@@ -173,7 +175,7 @@ function App() {
               </div>
             </div>
           </div>
-        </>
+        </div>
       </BrowserRouter>
     </>
   );
