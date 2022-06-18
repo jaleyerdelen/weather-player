@@ -17,7 +17,6 @@ const SpotifyAuth = (hash) => {
   const stringAfterHashtag = hash.substring(1);
   const paramsInUrl = stringAfterHashtag.split("&");
   const paramsSplitUp = paramsInUrl.reduce((accumlater, currentValue) => {
-    console.log(currentValue);
     const [key, value] = currentValue.split("=");
     accumlater[key] = value;
     return accumlater;
@@ -54,8 +53,8 @@ function App() {
     axios
       .get("https://geolocation-db.com/json/")
       .then((res) => {
-        if (res.data.country_name) {
-          setLocation(res.data.country_name);
+        if (res.data.country_name || res.data.city) {
+          setLocation(res.data.city);
         } else {
           console.log("error");
         }
@@ -82,27 +81,99 @@ function App() {
           <Route path="/hotplaylist" element={<SpotifyHotPlayList />} />
           <Route path="/snowplaylist" element={<SpotifySnowPlayList />} />
         </Routes>
-        <div className="container">
-          <h2>hi</h2>
-          <button className="btn btn-primary" onClick={handleLogin}>
-            Login to spotify
-          </button>
-          <div className="fw-bolder mt-5 mb-5">{`location is ${location}`}</div>
-          <div>
-            <div className="fw-bolder mt-5 mb-5">
-              Weather is {weather} <span>&#8451;</span>
+        <>
+          <div className="accordion accordion-flush" id="accordionFlushExample">
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="flush-headingOne">
+                <button
+                  className="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseOne"
+                  aria-expanded="false"
+                  aria-controls="flush-collapseOne"
+                >
+                  Login to spotify
+                </button>
+              </h2>
+              <div
+                id="flush-collapseOne"
+                className="accordion-collapse collapse"
+                aria-labelledby="flush-headingOne"
+                data-bs-parent="#accordionFlushExample"
+              >
+                <div className="accordion-body">
+                  <button classNameName="btn btn-primary" onClick={handleLogin}>
+                    Login to spotify
+                  </button>
+                </div>
+              </div>
             </div>
-            {weather > 10 && weather < 34 ? (
-              <SpotifyPlayList />
-            ) : (
-              ""
-            )}
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="flush-headingTwo">
+                <button
+                  className="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseTwo"
+                  aria-expanded="false"
+                  aria-controls="flush-collapseTwo"
+                >
+                  Learn current weather and location
+                </button>
+              </h2>
+              <div
+                id="flush-collapseTwo"
+                className="accordion-collapse collapse"
+                aria-labelledby="flush-headingTwo"
+                data-bs-parent="#accordionFlushExample"
+              >
+                <div className="accordion-body">
+                  <div classNameName="fw-bolder mt-5 mb-5">{`location is ${location}`}</div>
+                  <div>
+                    <div classNameName="fw-bolder mt-5 mb-5">
+                      Weather is {weather} <span>&#8451;</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="accordion-item">
+              <h2 className="accordion-header" id="flush-headingThree">
+                <button
+                  className="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseThree"
+                  aria-expanded="false"
+                  aria-controls="flush-collapseThree"
+                >
+                  Open to your playlist
+                </button>
+              </h2>
+              <div
+                id="flush-collapseThree"
+                className="accordion-collapse collapse"
+                aria-labelledby="flush-headingThree"
+                data-bs-parent="#accordionFlushExample"
+              >
+                <div className="accordion-body">
+                  <div>
+                    {weather > 10 && weather < 34 ? <SpotifyPlayList /> : ""}
 
-            {weather > 35 && weather < 70 ? <SpotifyHotPlayList /> : ""}
+                    {weather > 35 && weather < 70 ? <SpotifyHotPlayList /> : ""}
 
-            {weather > -50 && weather < 0 ? <SpotifySnowPlayList /> : ""}
+                    {weather > -50 && weather < 0 ? (
+                      <SpotifySnowPlayList />
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+        </>
       </BrowserRouter>
     </>
   );
