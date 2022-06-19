@@ -131,9 +131,9 @@ function App() {
                 data-bs-parent="#accordionFlushExample"
               >
                 <div className="accordion-body">
-                  <div classNameName="fw-bolder mt-5 mb-5">{`location is ${location}`}</div>
+                  <div>{`location is ${location}`}</div>
                   <div>
-                    <div classNameName="fw-bolder mt-5 mb-5">
+                    <div>
                       Weather is {weather} <span>&#8451;</span>
                     </div>
                   </div>
